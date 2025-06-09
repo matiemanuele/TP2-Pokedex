@@ -1,9 +1,4 @@
-import {
-  getUsers,
-  getUserById,
-  registerUserService,
-  loginUserService,
-} from "../services/userService.js";
+import {getUsers,getUserById,registerUserService,loginUserService,} from "../services/userService.js";
 import jwt from "jsonwebtoken";
 
 export const getAllUsers = async (req, res) => {
@@ -29,7 +24,7 @@ export const loginUserController = async (req, res) => {
     const token = jwt.sign(
       { _id: user._id, username: user.username, email: user.email },
       process.env.JWT_SECRET,
-      { expiresIn: "2h" }
+      { expiresIn: "1h" }
     );
     res.json({ message: "Login exitoso", user, token });
   } catch (error) {

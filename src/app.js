@@ -1,6 +1,6 @@
 import express from "express";
 import morgan from "morgan";
-import userRoutes from "./routes/userRoute.js";
+import userRoutes from "./routes/userRoutes.js";
 import cors from "cors";
 
 const app = express();
@@ -16,7 +16,7 @@ app.use("/api/users", userRoutes);
 // Ruta base
 app.get("/", (req, res) => {
   res.json({
-    message: "API TP2 - Examen 2025 C1",
+    message: "API TP2 -Pokedex",
   });
 });
 
