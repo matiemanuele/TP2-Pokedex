@@ -16,6 +16,12 @@ export async function findUserById(id) {
   return user;
 }
 
+export async function findUserByUsername(username) {
+  const db = getDb();
+  const user = await db.collection("users").findOne({ username });
+  return user;
+}
+
 // Busca un usuario por email y compara el password usando bcrypt
 export async function findByCredentials(email, password) {
   const db = getDb();

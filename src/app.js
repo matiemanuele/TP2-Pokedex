@@ -1,22 +1,23 @@
 import express from "express";
 import morgan from "morgan";
-import userRoutes from "./routes/userRoutes.js";
 import cors from "cors";
+import userRoutes from "./routes/userRoutes.js";
+import pokemonRoutes from "./routes/pokemonRoutes.js";
+import trainingRoutes from "./routes/trainingRoutes.js";
 
 const app = express();
 
-// Middlewars
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(cors());
-
-// Rutas
 app.use("/api/users", userRoutes);
+app.use("/api/pokemon", pokemonRoutes);
+app.use("/api/training", trainingRoutes);
 
-// Ruta base
 app.get("/", (req, res) => {
   res.json({
-    message: "API TP2 -Pokedex",
+    message: "🚀 Test - Solo usuarios",
+    status: "OK"
   });
 });
 

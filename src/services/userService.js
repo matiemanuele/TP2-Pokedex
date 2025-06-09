@@ -1,9 +1,5 @@
-import {
-  findAllUsers,
-  findUserById,
-  registerUser,
-  findByCredentials,
-} from "../data/userData.js";
+import { findAllUsers,findUserById,registerUser,findByCredentials,} from "../data/userData.js";
+
 
 export const getUsers = async () => {
   return await findAllUsers();
