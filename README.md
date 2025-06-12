@@ -1,47 +1,80 @@
- **Pokédex**
+Pokédex API - Proyecto Backend
 
-Este proyecto es una API RESTful desarrollada con Node.js, Express y MongoDB que simula una Pokédex personalizada para cada usuario. Permite registrarse, iniciar sesión, gestionar una lista de Pokémon favoritos y acceder a funcionalidades especiales como entrenar Pokémon y participar en batallas.
+Este proyecto es una API RESTful desarrollada con Node.js, Express y MongoDB que simula una Pokédex personalizada. Permite a los usuarios registrarse, iniciar sesión, capturar y entrenar Pokémon, gestionar sus favoritos, y participar en batallas.
 
-**Funcionalidad**
+###Funcionalidad general###
 
-✅ Autenticación y Usuarios
+-Autenticación y gestión de usuarios
 
-Registro de usuario: creación de cuenta con email y contraseña (hash con bcrypt).
+-Registro con email y contraseña encriptada.
 
-Login: inicio de sesión con JWT.
+-Inicio de sesión con generación de token JWT.
 
-Protección de rutas: middleware de autenticación usando tokens.
+-Middleware de autenticación para proteger rutas privadas.
 
-Gestión de Pokémon favoritos
+-Gestión de Pokémon favoritos
 
-GET/DELETE Pokémon de favoritos.
+-Obtener la lista de favoritos del usuario autenticado.
 
-Listar favoritos del usuario autenticado.
+-Agregar un Pokémon a favoritos.
 
+-Eliminar un Pokémon de favoritos.
 
-**Funcionalidades estrella**
+-Captura de Pokémon
 
-🏋️ Entrenamiento de Pokémon
+-Permite capturar un Pokémon real desde la PokeAPI utilizando su ID.
 
-Entrena a tus Pokémon para subirles el nivel y mejorar sus estadísticas (por ejemplo, experiencia, fuerza o velocidad). La lógica se aplica de forma acumulativa, y se guarda por usuario.
+-Verifica si el Pokémon ya está capturado.
 
-⚔️ Batalla Pokémon
+-Guarda la información en la colección del usuario.
 
-Enfrenta a tus Pokémon favoritos con los de otro usuario:
+-Entrenamiento de Pokémon
 
-Se simula una batalla basada en estadísticas (ataque, defensa, velocidad).
+-Incrementa estadísticas de los Pokémon capturados (por ejemplo, nivel, experiencia, fuerza).
 
-Se determina un ganador y el perdedor se borra el usuario 
+-La mejora se guarda de forma persistente por usuario.
 
-Puede registrar un historial de batallas si se desea.
+-Batalla Pokémon
 
+-Simula una batalla entre un Pokémon del usuario y otro oponente.
 
+-Utiliza lógica basada en estadísticas (ataque, defensa, velocidad).
 
-🛠 Tecnologías utilizadas
+-El Pokémon perdedor es eliminado de la colección del usuario.
+
+(Opcional) Puede guardarse un historial de batallas.
+
+Endpoints principales
+
+###Usuarios###
+
+POST /api/users/register - Registrar un nuevo usuario.
+
+POST /api/users/login: Iniciar sesión.
+
+###Pokémon###
+
+GET /api/pokemon/getfavorites  - Obtener Pokémon favoritos del usuario autenticado.
+
+POST /api/pokemon/addfavorites - Agregar un Pokémon a favoritos.
+
+DELETE /api/pokemon/favorites/:id - Eliminar un Pokémon de favoritos.
+
+POST /api/pokemon/catch - Capturar un Pokémon desde la PokeAPI.
+
+POST /api/pokemon/train/:id - Entrenar un Pokémon capturado.
+
+POST /api/pokemon/battle - Iniciar una batalla Pokémon.
+
+GET /api/pokemon/random - Obtener un Pokémon aleatorio.
+
+GET /api/pokemon/my - Obtener todos los Pokémon capturados por el usuario.
+
+###Tecnologías utilizadas
 
 Node.js
 
-Express
+Express.js
 
 MongoDB + Mongoose
 
@@ -51,14 +84,4 @@ Bcrypt
 
 dotenv
 
-PokeAPI (para obtener datos reales de los Pokémon)
-
-**Endpoints principales**
-
-POST /api/users/register - Registrar usuario
-POST /api/users/login - Iniciar sesión
-GET /api/pokemon/getfavorites - Obtener Pokémon favoritos
-POST /api/pokemon/addfavorites - Agregar Pokémon a favoritos
-DELETE /api/pokemon/favorites/:id - Eliminar un Pokémon de favoritos
-POST /api/pokemon/train/:id - Entrenar un Pokémon
-POST /api/pokemon/battle - Iniciar una batalla Pokémon
+PokeAPI (para obtener datos reales de Pokémon)
