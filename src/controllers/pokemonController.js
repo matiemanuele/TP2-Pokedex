@@ -56,18 +56,13 @@ export const getMyPokemon = async (req, res) => {
 export const catchPokemon = async (req, res) => {
   try {
     const userId = req.user._id;
-    const { pokemonId } = req.body; // Solo ID, sin apodo
+    const { pokemonId } = req.body; 
     
     if (!pokemonId) {
       return res.status(400).json({ message: "El ID del Pokémon es requerido" });
     }
-    
-    // Obtener datos de la API
     const pokemonData = await fetchPokemonFromAPI(pokemonId);
-    
-    // Agregar a la colección del usuario 
     const result = await addPokemonToUserService(userId, pokemonData);
-    
     res.status(201).json({
       message: `¡Has capturado a ${pokemonData.name}!`,
       pokemon: result

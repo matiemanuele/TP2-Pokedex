@@ -1,6 +1,6 @@
 Pokédex API - Proyecto Backend
 
-Este proyecto es una API RESTful desarrollada con Node.js, Express y MongoDB que simula una Pokédex personalizada. Permite a los usuarios registrarse, iniciar sesión, capturar y entrenar Pokémon, gestionar sus favoritos, y participar en batallas.
+una Pokédex personalizada. Permite a los usuarios registrarse, iniciar sesión, capturar y entrenar Pokémon, gestionar sus favoritos, y participar en batallas.Este proyecto es una API RESTful desarrollada con Node.js, Express y MongoDB que simula 
 
 ###Funcionalidad general###
 
@@ -85,3 +85,7 @@ Bcrypt
 dotenv
 
 PokeAPI (para obtener datos reales de Pokémon)
+
+
+
+FEHCAS :  26/6  presentacion , 16/7 Defensa 

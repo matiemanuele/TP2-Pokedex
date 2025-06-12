@@ -7,9 +7,7 @@ export const fetchPokemonFromAPI = async (identifier) => {
     
     const pokemonIdentifier = String(identifier).toLowerCase();
     const url = `${POKEAPI_BASE_URL}/pokemon/${pokemonIdentifier}`;
-    
     console.log(`🌐 URL: ${url}`);
-    
     const response = await fetch(url);
     console.log(`📡 Response status: ${response.status}`);
     
@@ -18,8 +16,7 @@ export const fetchPokemonFromAPI = async (identifier) => {
         throw new Error(`Pokémon "${identifier}" no encontrado`);
       }
       throw new Error(`Error de API: ${response.status}`);
-    }
-    
+    } 
     const pokemon = await response.json();
     console.log(`✅ Pokémon obtenido: ${pokemon.name}`);
     return formatPokemonData(pokemon);
@@ -33,7 +30,7 @@ export const fetchPokemonFromAPI = async (identifier) => {
 export const fetchRandomPokemon = async () => {
   try {
     console.log("🎲 Generando Pokémon aleatorio...");
-    const randomId = Math.floor(Math.random() * 1010) + 1;
+    const randomId = Math.floor(Math.random() * 151) + 1;
     console.log(`🎯 ID aleatorio generado: ${randomId}`);
     return await fetchPokemonFromAPI(randomId);
   } catch (error) {
@@ -45,25 +42,25 @@ export const fetchRandomPokemon = async () => {
 // Formatear datos del Pokemon 
 const formatPokemonData = (apiPokemon) => {
   try {
+
     console.log(`🔧 Formateando datos de: ${apiPokemon.name}`);
-    
     const stats = {};
     apiPokemon.stats.forEach(stat => {
       const statName = mapStatName(stat.stat.name);
       stats[statName] = stat.base_stat;
     });
-
     const formattedData = {
       apiId: apiPokemon.id,
       name: apiPokemon.name,
-      baseStats: stats,
+      hp: stats.hp,
+       attack: stats.attack,
+        defense: stats.defense,
       types: apiPokemon.types.map(type => type.type.name),
-      sprites: {
-        front_default: apiPokemon.sprites.front_default,
-        official_artwork: apiPokemon.sprites.other?.["official-artwork"]?.front_default
-      }
-    };
-    
+    //  sprites: {
+    //  front_default: apiPokemon.sprites.front_default,
+    //  official_artwork: apiPokemon.sprites.other?.["official-artwork"]?.front_default
+    //  }
+    };  
     console.log(`✅ Datos formateados correctamente`);
     return formattedData;
   } catch (error) {
@@ -76,10 +73,7 @@ const mapStatName = (apiStatName) => {
   const statMap = {
     "hp": "hp",
     "attack": "attack", 
-    "defense": "defense",
-    "special-attack": "specialAttack",
-    "special-defense": "specialDefense",
-    "speed": "speed"
+    "defense": "defense"
   };
   
   return statMap[apiStatName] || apiStatName;

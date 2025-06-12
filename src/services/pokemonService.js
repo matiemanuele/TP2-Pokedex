@@ -16,28 +16,25 @@ export const getUserPokemonService = async (userId) => {
   }
 };
 
-// Agregar un nuevo Pokémon al usuario (SIN APODO)
+// Agregar un nuevo Pokémon al usuario
 export const addPokemonToUserService = async (userId, pokemonData) => {
   try {
-    // Verificar si ya tiene este Pokémon
     const existingPokemon = await findUserPokemon(userId);
     const alreadyHas = existingPokemon.some(p => p.apiId === pokemonData.apiId);
     
     if (alreadyHas) {
       throw new Error(`Ya tienes a ${pokemonData.name} en tu colección`);
     }
-    
-    // Crear Pokémon simplificado 
     const newPokemon = {
       userId,
       apiId: pokemonData.apiId,
       name: pokemonData.name, 
       level: 1,
-      attack: calculateStat(pokemonData.baseStats.attack, 1),
-      defense: calculateStat(pokemonData.baseStats.defense, 1),
-      hp: calculateStat(pokemonData.baseStats.hp, 1),
+      attack: calculateStat(pokemonData.attack, 1),
+      defense: calculateStat(pokemonData.defense, 1),
+      hp: calculateStat(pokemonData.hp, 1),
       types: pokemonData.types,
-      sprite: pokemonData.sprites.front_default,
+    //sprite: pokemonData.sprites.front_default,
       capturedAt: new Date()
     };
     

@@ -4,13 +4,12 @@ import { findUserPokemonById, updatePokemonData } from "../data/pokemonData.js";
 // Entrenar un Pokémon
 export const trainPokemonService = async (userId, pokemonId, trainingType) => {
   try {
-    // Verificar que el Pokémon existe y pertenece al usuario
+    
     const pokemon = await findUserPokemonById(userId, pokemonId);
     if (!pokemon) {
       throw new Error("Pokémon no encontrado en tu colección");
     }
-    
-    // Validar tipo de entrenamiento
+
     if (!["attack", "defense"].includes(trainingType)) {
       throw new Error("Tipo de entrenamiento inválido. Usa 'attack' o 'defense'");
     }
@@ -39,7 +38,7 @@ export const trainPokemonService = async (userId, pokemonId, trainingType) => {
     
     // Verificar si sube de nivel (cada 3 entrenamientos)
     const trainingHistory = await findPokemonTrainingHistory(userId, pokemonId);
-    const totalTrainings = trainingHistory.length + 1; // +1 por el entrenamiento actual
+    const totalTrainings = trainingHistory.length + 1; 
     
     let leveledUp = false;
     if (totalTrainings % 3 === 0 && pokemon.level < 100) {
@@ -79,7 +78,7 @@ export const trainPokemonService = async (userId, pokemonId, trainingType) => {
     
     await createTrainingSession(trainingSession);
     
-    // Preparar respuesta
+    //  respuesta
     let message = `${pokemon.name} completó el entrenamiento de ${trainingType}`;
     let improvements = [];
     
@@ -114,10 +113,8 @@ export const getTrainingHistoryService = async (userId, pokemonId = null, limit 
     let history;
     
     if (pokemonId) {
-      // Historial de un Pokémon específico
       history = await findPokemonTrainingHistory(userId, pokemonId, limit);
     } else {
-      // Historial general del usuario
       history = await findTrainingHistory(userId, limit);
     }
     
@@ -132,11 +129,7 @@ export const getTrainingHistoryService = async (userId, pokemonId = null, limit 
 export const getTrainingStatsService = async (userId) => {
   try {
     const stats = await getUserTrainingStats(userId);
-    
-    // Calcular totales
     const totalSessions = stats.reduce((sum, stat) => sum + stat.totalSessions, 0);
-    
-    // Preparar estadísticas formateadas
     const trainingStats = {
       totalSessions: totalSessions,
       byType: {},
@@ -150,13 +143,11 @@ export const getTrainingStatsService = async (userId) => {
         lastSession: stat.lastSession
       };
       
-      // Encontrar el tipo más usado
       if (!trainingStats.mostUsedType || 
           stat.totalSessions > trainingStats.byType[trainingStats.mostUsedType].sessions) {
         trainingStats.mostUsedType = stat._id;
       }
       
-      // Encontrar la última actividad
       if (!trainingStats.lastActivity || 
           stat.lastSession > trainingStats.lastActivity) {
         trainingStats.lastActivity = stat.lastSession;

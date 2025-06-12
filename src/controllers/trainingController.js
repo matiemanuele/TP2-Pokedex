@@ -22,7 +22,6 @@ export const trainPokemon = async (req, res) => {
     const userId = req.user._id;
     const { pokemonId, trainingType } = req.body;
     
-    // Validaciones
     if (!pokemonId) {
       return res.status(400).json({
         message: "El ID del Pokémon es requerido"
