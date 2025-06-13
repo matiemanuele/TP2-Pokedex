@@ -1,4 +1,5 @@
-import {getUsers,getUserById,registerUserService,loginUserService,} from "../services/userService.js";
+import {getUsers,getUserById,registerUserService,loginUserService,updateUserByAdmin, deleteUserByIdService} from "../services/userService.js";
+import { removePokemonFromUser, updatePokemonForUser } from "../services/pokemonService.js";
 import jwt from "jsonwebtoken";
 
 export const getAllUsers = async (req, res) => {
@@ -72,5 +73,53 @@ export const getUser = async (req, res) => {
   } catch (error) {
     console.log("Error fetching users: ", error);
     res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const updateUserAdmin = async (req, res) => {
+  const { email, password } = req.body;
+  const { id } = req.params;
+
+  if (!email && !password) {
+    return res.status(400).json({ message: "Debe enviar email o password a modificar" });
+  }
+
+  try {
+    const result = await updateUserByAdmin(id, { email, password });
+    res.json({ message: "Usuario actualizado correctamente", result });
+  } catch (error) {
+    res.status(500).json({ message: "Error actualizando usuario" });
+  }
+};
+
+export const deleteUserAdmin = async (req, res) => {
+  try {
+    const result = await deleteUserByIdService(req.params.id);
+    res.json({ message: "Usuario eliminado correctamente", result });
+  } catch (error) {
+    res.status(500).json({ message: "Error eliminando usuario" });
+  }
+};
+
+export const deletePokemonFromUser = async (req, res) => {
+  const { userId, pokeId } = req.params;
+
+  try {
+    const result = await removePokemonFromUser(userId, pokeId);
+    res.json({ message: "Pokémon eliminado correctamente", result });
+  } catch (error) {
+    res.status(500).json({ message: "Error eliminando Pokémon" });
+  }
+};
+
+export const updatePokemonFromUser = async (req, res) => {
+  const { userId, pokeId } = req.params;
+  const updateData = req.body;
+
+  try {
+    const result = await updatePokemonForUser(userId, pokeId, updateData);
+    res.json({ message: "Pokémon actualizado correctamente", result });
+  } catch (error) {
+    res.status(500).json({ message: "Error actualizando Pokémon" });
   }
 };

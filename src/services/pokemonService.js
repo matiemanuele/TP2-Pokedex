@@ -1,4 +1,4 @@
-import {findUserPokemon,addPokemonToUserData,updatePokemonData,removePokemonFromUser,findUserPokemonById} from "../data/pokemonData.js";
+import {findUserPokemon,addPokemonToUserData,removePokemonFromUser,findUserPokemonById} from "../data/pokemonData.js";
 
 // Función local simple para calcular stats
 const calculateStat = (baseStat, level) => {
@@ -67,3 +67,13 @@ export const releasePokemonService = async (userId, pokemonId) => {
     throw new Error("Error al liberar Pokémon");
   }
 };
+
+export const removePokemonFromUserService = async (userId,pokemonId) => {
+try{
+  return await removePokemonFromUser (userId,pokemonId)
+}catch{
+  console.error("Error en borrar Pokemon", error);
+    throw new Error("Error al eliminar Pokémon");
+}
+
+} 

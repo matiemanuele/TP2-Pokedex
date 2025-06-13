@@ -9,6 +9,10 @@ export const getUserById = async (id) => {
   return await findUserById(id);
 };
 
+export const deleteUserByIdService = async (id) => {
+  return await deleteUserById(id);
+};
+
 export const registerUserService = async ({ username, email, password }) => {
   try {
     return await registerUser({ username, email, password });

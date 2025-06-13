@@ -36,7 +36,7 @@ export async function findByCredentials(email, password) {
   return user;
 }
 
-// Registra un nuevo usuario: hashea el password y lo guarda en la base de datos
+// hashea el password y lo guarda en la base de datos
 export async function registerUser({ username, email, password }) {
   const db = getDb();
   // Verificar si el usuario ya existe
@@ -55,3 +55,25 @@ export async function registerUser({ username, email, password }) {
   const result = await db.collection("users").insertOne(newUser);
   return result;
 }
+
+export const updateUserByAdmin = async (id, { email, password }) => {
+  const db = getDb();
+  const updateFields = {};
+  if (email) updateFields.email = email;
+  if (password) updateFields.password = await bcrypt.hash(password, 10);
+
+  const result = await db.collection("users").updateOne(
+    { _id: new ObjectId(id) },
+    { $set: updateFields }
+  );
+
+  return result;
+};
+
+export const deleteUserById = async (id) => {
+  const db = getDb();
+  const result = await db.collection("users").deleteOne({ _id: new ObjectId(id) });
+  return result;
+};
+
+

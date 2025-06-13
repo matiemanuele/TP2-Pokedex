@@ -61,6 +61,7 @@ export const addPokemonToUserData = async (pokemonData) => {
 
 // Actualizar datos de un Pokémon
 export const updatePokemonData = async (userId, pokemonId, updates) => {
+  
   try {
     const db = getDb();
     
@@ -92,11 +93,9 @@ export const updatePokemonData = async (userId, pokemonId, updates) => {
 export const removePokemonFromUser = async (userId, pokemonId) => {
   try {
     const db = getDb();
-    
     if (!ObjectId.isValid(pokemonId)) {
       throw new Error("ID de Pokémon inválido");
-    }
-    
+    }  
     const result = await db.collection(COLLECTION_NAME).deleteOne({
       _id: new ObjectId(pokemonId),
       userId: new ObjectId(userId)
@@ -108,3 +107,4 @@ export const removePokemonFromUser = async (userId, pokemonId) => {
     throw new Error("Error al eliminar Pokémon de la base de datos");
   }
 };
+

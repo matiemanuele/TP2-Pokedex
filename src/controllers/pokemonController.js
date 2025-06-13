@@ -1,6 +1,6 @@
 import {fetchPokemonFromAPI,fetchRandomPokemon} from "../services/pokeAPIService.js";
 
-import {getUserPokemonService,addPokemonToUserService, releasePokemonService} from "../services/pokemonService.js";
+import {getUserPokemonService,addPokemonToUserService, releasePokemonService,removePokemonFromUserService} from "../services/pokemonService.js";
 
 // Obtener Pokémon aleatorio de la API
 export const getRandomPokemon = async (req, res) => {
@@ -61,6 +61,7 @@ export const catchPokemon = async (req, res) => {
     if (!pokemonId) {
       return res.status(400).json({ message: "El ID del Pokémon es requerido" });
     }
+    //No token
     const pokemonData = await fetchPokemonFromAPI(pokemonId);
     const result = await addPokemonToUserService(userId, pokemonData);
     res.status(201).json({
@@ -95,5 +96,28 @@ export const releasePokemon = async (req, res) => {
   } catch (error) {
     console.error("Error al liberar Pokémon:", error);
     res.status(500).json({ message: "Error al liberar Pokémon" });
+  }
+};
+
+export const deletePokemonFromUser = async (req, res) => {
+  const { userId, pokeId } = req.params;
+
+  try {
+    const result = await removePokemonFromUserService(userId, pokeId);
+    res.json({ message: "Pokémon eliminado correctamente", result });
+  } catch (error) {
+    res.status(500).json({ message: "Error eliminando Pokémon" });
+  }
+};
+
+export const updatePokemonFromUser = async (req, res) => {
+  const { userId, pokeId } = req.params;
+  const updateData = req.body;
+
+  try {
+    const result = await updatePokemonForUser(userId, pokeId, updateData);
+    res.json({ message: "Pokémon actualizado correctamente", result });
+  } catch (error) {
+    res.status(500).json({ message: "Error actualizando Pokémon" });
   }
 };
