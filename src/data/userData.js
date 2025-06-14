@@ -62,18 +62,17 @@ export const updateUserByAdmin = async (id, { email, password }) => {
   if (email) updateFields.email = email;
   if (password) updateFields.password = await bcrypt.hash(password, 10);
 
-  const result = await db.collection("users").updateOne(
-    { _id: new ObjectId(id) },
-    { $set: updateFields }
-  );
+  const result = await db
+    .collection("users")
+    .updateOne({ _id: new ObjectId(id) }, { $set: updateFields });
 
   return result;
 };
 
 export const deleteUserById = async (id) => {
   const db = getDb();
-  const result = await db.collection("users").deleteOne({ _id: new ObjectId(id) });
+  const result = await db
+    .collection("users")
+    .deleteOne({ _id: new ObjectId(id) });
   return result;
 };
-
-

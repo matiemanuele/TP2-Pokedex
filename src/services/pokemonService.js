@@ -1,8 +1,14 @@
-import {findUserPokemon,addPokemonToUserData,removePokemonFromUser,findUserPokemonById} from "../data/pokemonData.js";
+import {
+  findUserPokemon,
+  addPokemonToUserData,
+  removePokemonFromUser,
+  findUserPokemonById,
+  updatePokemonData,
+} from "../data/pokemonData.js";
 
 // Función local simple para calcular stats
 const calculateStat = (baseStat, level) => {
-  return Math.floor(baseStat + (level * 2));
+  return Math.floor(baseStat + level * 2);
 };
 
 // Obtener todos los Pokémon del usuario
@@ -20,24 +26,26 @@ export const getUserPokemonService = async (userId) => {
 export const addPokemonToUserService = async (userId, pokemonData) => {
   try {
     const existingPokemon = await findUserPokemon(userId);
-    const alreadyHas = existingPokemon.some(p => p.apiId === pokemonData.apiId);
-    
+    const alreadyHas = existingPokemon.some(
+      (p) => p.apiId === pokemonData.apiId
+    );
+
     if (alreadyHas) {
       throw new Error(`Ya tienes a ${pokemonData.name} en tu colección`);
     }
     const newPokemon = {
       userId,
       apiId: pokemonData.apiId,
-      name: pokemonData.name, 
+      name: pokemonData.name,
       level: 1,
       attack: calculateStat(pokemonData.attack, 1),
       defense: calculateStat(pokemonData.defense, 1),
       hp: calculateStat(pokemonData.hp, 1),
       types: pokemonData.types,
-    //sprite: pokemonData.sprites.front_default,
-      capturedAt: new Date()
+      //sprite: pokemonData.sprites.front_default,
+      capturedAt: new Date(),
     };
-    
+
     const result = await addPokemonToUserData(newPokemon);
     return { ...newPokemon, _id: result.insertedId };
   } catch (error) {
@@ -68,12 +76,20 @@ export const releasePokemonService = async (userId, pokemonId) => {
   }
 };
 
-export const removePokemonFromUserService = async (userId,pokemonId) => {
-try{
-  return await removePokemonFromUser (userId,pokemonId)
-}catch{
-  console.error("Error en borrar Pokemon", error);
+export const removePokemonFromUserService = async (userId, pokemonId) => {
+  try {
+    return await removePokemonFromUser(userId, pokemonId);
+  } catch {
+    console.error("Error en borrar Pokemon", error);
     throw new Error("Error al eliminar Pokémon");
-}
+  }
+};
 
-} 
+export const updatePokemonForUserService = async (userId, pokemonId) => {
+  try {
+    return await updatePokemonData(userId, pokemonId);
+  } catch {
+    console.error("Error en actualizar Pokemon del usuario", error);
+    throw new Error("Error en actualizar Pokemon del usuario");
+  }
+};
