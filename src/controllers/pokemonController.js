@@ -1,15 +1,6 @@
-import {
-  fetchPokemonFromAPI,
-  fetchRandomPokemon,
-} from "../services/pokeAPIService.js";
+import {fetchPokemonFromAPI,fetchRandomPokemon} from "../services/pokeAPIService.js";
 
-import {
-  getUserPokemonService,
-  addPokemonToUserService,
-  releasePokemonService,
-  removePokemonFromUserService,
-  updatePokemonForUserService,
-} from "../services/pokemonService.js";
+import {getUserPokemonService,addPokemonToUserService, releasePokemonService,removePokemonFromUserService,updatePokemonFromUser} from "../services/pokemonService.js";
 
 // Obtener Pokémon aleatorio de la API
 export const getRandomPokemon = async (req, res) => {
@@ -17,7 +8,7 @@ export const getRandomPokemon = async (req, res) => {
     const pokemon = await fetchRandomPokemon();
     res.json({
       message: "Pokémon aleatorio obtenido",
-      pokemon: pokemon,
+      pokemon: pokemon
     });
   } catch (error) {
     console.error("Error al obtener Pokémon aleatorio:", error);
@@ -30,10 +21,10 @@ export const getPokemonFromAPI = async (req, res) => {
   try {
     const { id } = req.params;
     const pokemon = await fetchPokemonFromAPI(id);
-
+    
     res.json({
       message: "Pokémon obtenido de la API",
-      pokemon: pokemon,
+      pokemon: pokemon
     });
   } catch (error) {
     console.error("Error al obtener Pokémon de API:", error);
@@ -49,11 +40,11 @@ export const getMyPokemon = async (req, res) => {
   try {
     const userId = req.user._id;
     const pokemon = await getUserPokemonService(userId);
-
+    
     res.json({
       message: "Tus Pokémon obtenidos",
       count: pokemon.length,
-      pokemon: pokemon,
+      pokemon: pokemon
     });
   } catch (error) {
     console.error("Error al obtener Pokémon del usuario:", error);
@@ -61,23 +52,21 @@ export const getMyPokemon = async (req, res) => {
   }
 };
 
-// Capturar Pokémon
+// Capturar Pokémon 
 export const catchPokemon = async (req, res) => {
   try {
     const userId = req.user._id;
-    const { pokemonId } = req.body;
-
+    const { pokemonId } = req.body; 
+    
     if (!pokemonId) {
-      return res
-        .status(400)
-        .json({ message: "El ID del Pokémon es requerido" });
+      return res.status(400).json({ message: "El ID del Pokémon es requerido" });
     }
     //No token
     const pokemonData = await fetchPokemonFromAPI(pokemonId);
     const result = await addPokemonToUserService(userId, pokemonData);
     res.status(201).json({
       message: `¡Has capturado a ${pokemonData.name}!`,
-      pokemon: result,
+      pokemon: result
     });
   } catch (error) {
     console.error("Error al capturar Pokémon:", error);
@@ -96,13 +85,13 @@ export const releasePokemon = async (req, res) => {
   try {
     const userId = req.user._id;
     const { id } = req.params;
-
+    
     const result = await releasePokemonService(userId, id);
-
+    
     if (!result) {
       return res.status(404).json({ message: "Pokémon no encontrado" });
     }
-
+    
     res.json({ message: "Pokémon liberado exitosamente" });
   } catch (error) {
     console.error("Error al liberar Pokémon:", error);
@@ -124,13 +113,8 @@ export const deletePokemonFromUser = async (req, res) => {
 export const updatePokemonFromUser = async (req, res) => {
   const { userId, pokeId } = req.params;
   const updateData = req.body;
-
   try {
-    const result = await updatePokemonForUserService(
-      userId,
-      pokeId,
-      updateData
-    );
+    const result = await updatePokemonForUser(userId, pokeId, updateData);
     res.json({ message: "Pokémon actualizado correctamente", result });
   } catch (error) {
     res.status(500).json({ message: "Error actualizando Pokémon" });

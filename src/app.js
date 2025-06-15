@@ -4,6 +4,7 @@ import cors from "cors";
 import userRoutes from "./routes/userRoutes.js";
 import pokemonRoutes from "./routes/pokemonRoutes.js";
 import trainingRoutes from "./routes/trainingRoutes.js";
+import battleRoutes from "./routes/battleRoutes.js";
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(cors());
 app.use("/api/users", userRoutes);
 app.use("/api/pokemon", pokemonRoutes);
 app.use("/api/training", trainingRoutes);
+app.use("/api/battle", battleRoutes);
 
 app.get("/", (req, res) => {
   res.json({
