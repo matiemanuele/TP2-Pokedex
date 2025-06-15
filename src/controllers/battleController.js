@@ -1,68 +1,105 @@
-import {
-  getRandomUserWithPokemonService,
+import { 
+  getBattleOpponentService,
   removePokemonFromUserService,
-  saveBattleHistoryService,
+  saveBattleHistoryService 
 } from "../services/battleService.js";
 
 export const startBattle = async (req, res) => {
   try {
-    // Obtener dos usuarios distintos con al menos un Pokémon cada uno
-    const [user1, user2] = await getRandomUserWithPokemonService();
-    if (!user1 || !user2) {
-      console.log(user1);
-      console.log(user2);
-      return res.status(400).json({
-        message: "No hay suficientes usuarios con Pokémon para batallar",
-      });
+    const currentUserId = req.user._id; 
+    
+    const { currentUser, opponent } = await getBattleOpponentService(currentUserId);
+    
+    if (!currentUser) {
+      return res.status(400).json({ message: "No tienes Pokémon para batallar" });
+    }
+    
+    if (!opponent) {
+      return res.status(400).json({ message: "No hay oponentes disponibles" });
     }
 
-    const pokemon1 = user1.pokemons[0];
-    const pokemon2 = user2.pokemons[0];
+    const myPokemon = { ...currentUser.pokemons[0], currentHp: currentUser.pokemons[0].hp };
+    const enemyPokemon = { ...opponent.pokemons[0], currentHp: opponent.pokemons[0].hp };
+    
+    const fullLog = []; 
+    
+    fullLog.push(`${myPokemon.name} inicia con HP:${myPokemon.hp} ATK:${myPokemon.attack} DEF:${myPokemon.defense}`);
+    fullLog.push(`${enemyPokemon.name} inicia con HP:${enemyPokemon.hp} ATK:${enemyPokemon.attack} DEF:${enemyPokemon.defense}`);
+    
+    let turn = 1;
 
-    const log = [];
-    log.push(
-      `Batalla entre ${pokemon1.name} (Usuario ${user1._id}) vs ${pokemon2.name} (Usuario ${user2._id})`
-    );
+    // Batalla
+    while (myPokemon.currentHp > 0 && enemyPokemon.currentHp > 0) {
 
-    // Clonar stats iniciales
-    let p1 = { ...pokemon1 };
-    let p2 = { ...pokemon2 };
+      const myDamage = Math.max(myPokemon.attack - enemyPokemon.defense, 1);
+      enemyPokemon.currentHp = Math.max(enemyPokemon.currentHp - myDamage, 0);
+      fullLog.push(`${myPokemon.name} ataco a ${enemyPokemon.name} con ${myDamage} de daño (DEF:${enemyPokemon.defense}) ${enemyPokemon.name} HP:${enemyPokemon.currentHp}`);
+      
+      if (enemyPokemon.currentHp <= 0) {
+        fullLog.push(`${enemyPokemon.name} fue derrotado`);
+        break;
+      }
+      
+      const enemyDamage = Math.max(enemyPokemon.attack - myPokemon.defense, 1);
+      myPokemon.currentHp = Math.max(myPokemon.currentHp - enemyDamage, 0);
+      fullLog.push(`${enemyPokemon.name} ataco a ${myPokemon.name} con ${enemyDamage} de daño (DEF:${myPokemon.defense}) ${myPokemon.name} HP:${myPokemon.currentHp}`);
+      
+      if (myPokemon.currentHp <= 0) {
+        fullLog.push(`${myPokemon.name} fue derrotado`);
+        break;
+      }
 
-    // Batalla por turnos hasta que uno muere (hp <= 0)
-    while (p1.hp > 0 && p2.hp > 0) {
-      // p1 ataca a p2
-      const damageToP2 = Math.max(p1.attack - p2.defense, 1);
-      p2.hp -= damageToP2;
-      log.push(
-        `${p1.name} ataca a ${p2.name} y le causa ${damageToP2} de daño (HP restante: ${p2.hp})`
-      );
-      if (p2.hp <= 0) break;
-
-      // p2 ataca a p1
-      const damageToP1 = Math.max(p2.attack - p1.defense, 1);
-      p1.hp -= damageToP1;
-      log.push(
-        `${p2.name} ataca a ${p1.name} y le causa ${damageToP1} de daño (HP restante: ${p1.hp})`
-      );
+      turn++;
     }
 
-    const winner = p1.hp > 0 ? pokemon1 : pokemon2;
-    const loser =
-      p1.hp <= 0
-        ? { userId: user1._id, pokemon: pokemon1 }
-        : { userId: user2._id, pokemon: pokemon2 };
+    const iWon = myPokemon.currentHp > 0;
+    const winner = iWon ? currentUser : opponent;
+    const loser = iWon ? opponent : currentUser;
+    const winnerPokemon = iWon ? myPokemon : enemyPokemon;
+    const loserPokemon = iWon ? enemyPokemon : myPokemon;
 
-    await removePokemonFromUserService(loser.userId, loser.pokemon._id);
+
+    const lastEvents = fullLog.slice(-10);
+
+    await removePokemonFromUserService(loser._id, loserPokemon._id);
+    
     await saveBattleHistoryService({
-      winner: { userId: winner.ownerId, pokemon: winner },
-      loser,
-      log,
-      date: new Date(),
+      currentUserId,
+      winner: { user: winner, pokemon: winnerPokemon },
+      loser: { user: loser, pokemon: loserPokemon },
+      log: fullLog, 
+      date: new Date()
     });
 
-    res.json({ message: `Ganó ${winner.name}`, log });
+    res.json({
+      message: iWon ? "¡Ganaste!" : "Perdiste...",
+      result: {
+        victory: iWon,
+        yourPokemon: myPokemon.name,
+        opponentPokemon: enemyPokemon.name,
+        opponent: opponent.username,
+        summary: iWon ? 
+          `Tu ${myPokemon.name} derrotó a ${enemyPokemon.name} de ${opponent.username}` :
+          `Tu ${myPokemon.name} fue derrotado por ${enemyPokemon.name} de ${opponent.username}`,
+        initialStats: {
+          yourPokemon: {
+            name: myPokemon.name,
+            hp: currentUser.pokemons[0].hp,
+            attack: myPokemon.attack,
+            defense: myPokemon.defense
+          },
+          opponentPokemon: {
+            name: enemyPokemon.name,
+            hp: opponent.pokemons[0].hp,
+            attack: enemyPokemon.attack,
+            defense: enemyPokemon.defense
+          }
+        },
+        lastEvents
+      }
+    });
+
   } catch (error) {
-    console.error("Error al iniciar la batalla:", error);
-    res.status(500).json({ message: "Error al iniciar la batalla" });
+    res.status(500).json({ message: "Error en batalla", error: error.message });
   }
 };
