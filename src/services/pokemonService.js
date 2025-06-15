@@ -6,12 +6,10 @@ import {
   updatePokemonData,
 } from "../data/pokemonData.js";
 
-// Función local simple para calcular stats
 const calculateStat = (baseStat, level) => {
   return Math.floor(baseStat + level * 2);
 };
 
-// Obtener todos los Pokémon del usuario
 export const getUserPokemonService = async (userId) => {
   try {
     const pokemon = await findUserPokemon(userId);
@@ -22,7 +20,7 @@ export const getUserPokemonService = async (userId) => {
   }
 };
 
-// Agregar un nuevo Pokémon al usuario
+// agrega Pokémon al usuario
 export const addPokemonToUserService = async (userId, pokemonData) => {
   try {
     const existingPokemon = await findUserPokemon(userId);
@@ -42,7 +40,6 @@ export const addPokemonToUserService = async (userId, pokemonData) => {
       defense: calculateStat(pokemonData.defense, 1),
       hp: calculateStat(pokemonData.hp, 1),
       types: pokemonData.types,
-      //sprite: pokemonData.sprites.front_default,
       capturedAt: new Date(),
     };
 
@@ -54,7 +51,6 @@ export const addPokemonToUserService = async (userId, pokemonData) => {
   }
 };
 
-// Obtener detalles de un Pokémon específico
 export const getUserPokemonDetailsService = async (userId, pokemonId) => {
   try {
     const pokemon = await findUserPokemonById(userId, pokemonId);

@@ -1,7 +1,7 @@
 import { getDb } from "../data/connection.js";
 import { ObjectId } from "mongodb";
 
-// Obtener un usuario aleatorio que tenga Pokémon (excluyendo al usuario actual)
+//obtiene opponente
 export const getRandomOpponent = async (currentUserId) => {
   const db = getDb();
   
@@ -16,7 +16,7 @@ export const getRandomOpponent = async (currentUserId) => {
     },
     { $match: { 
       "pokemons.0": { $exists: true },
-      "_id": { $ne: new ObjectId(currentUserId) } // Excluir usuario actual
+      "_id": { $ne: new ObjectId(currentUserId) } // excluye a el usuario actual
     }},
     { $sample: { size: 1 } }
   ]).toArray();
@@ -24,7 +24,7 @@ export const getRandomOpponent = async (currentUserId) => {
   return opponents.length > 0 ? opponents[0] : null;
 };
 
-// Obtener datos del usuario actual con sus Pokémon
+// datos del usuario actual con sus Pokémon
 export const getCurrentUserWithPokemon = async (userId) => {
   const db = getDb();
   

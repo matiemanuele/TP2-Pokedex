@@ -22,14 +22,14 @@ export async function findUserByUsername(username) {
   return user;
 }
 
-// Busca un usuario por email y compara el password usando bcrypt
+
 export async function findByCredentials(email, password) {
   const db = getDb();
   const user = await db.collection("users").findOne({ email });
   if (!user) {
     return null;
   }
-  const isMatch = await bcrypt.compare(password, user.password);
+  const isMatch = await bcrypt.compare(password, user.password); // compara el password usando bcrypt
   if (!isMatch) {
     return null;
   }
@@ -39,7 +39,7 @@ export async function findByCredentials(email, password) {
 // hashea el password y lo guarda en la base de datos
 export async function registerUser({ username, email, password }) {
   const db = getDb();
-  // Verificar si el usuario ya existe
+// el usuario ya existe?
   const existingUser = await db.collection("users").findOne({ email });
   if (existingUser) {
     throw new Error("El email ya está registrado");

@@ -11,7 +11,6 @@ import {
   updatePokemonForUserService,
 } from "../services/pokemonService.js";
 
-// Obtener Pokémon aleatorio de la API
 export const getRandomPokemon = async (req, res) => {
   try {
     const pokemon = await fetchRandomPokemon();
@@ -25,7 +24,6 @@ export const getRandomPokemon = async (req, res) => {
   }
 };
 
-// Obtener Pokémon específico de la API
 export const getPokemonFromAPI = async (req, res) => {
   try {
     const { id } = req.params;
@@ -44,7 +42,6 @@ export const getPokemonFromAPI = async (req, res) => {
   }
 };
 
-// Obtener mis Pokémon
 export const getMyPokemon = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -61,7 +58,6 @@ export const getMyPokemon = async (req, res) => {
   }
 };
 
-// Capturar Pokémon
 export const catchPokemon = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -91,7 +87,6 @@ export const catchPokemon = async (req, res) => {
   }
 };
 
-// Liberar Pokémon
 export const releasePokemon = async (req, res) => {
   try {
     const userId = req.user._id;

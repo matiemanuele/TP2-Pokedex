@@ -3,7 +3,6 @@ import { getDb } from "./connection.js";
 
 const COLLECTION_NAME = "user_pokemon";
 
-// Obtener todos los Pokémon de un usuario
 export const findUserPokemon = async (userId) => {
   try {
     const db = getDb();
@@ -20,7 +19,6 @@ export const findUserPokemon = async (userId) => {
   }
 };
 
-// Buscar un Pokémon específico del usuario
 export const findUserPokemonById = async (userId, pokemonId) => {
   try {
     const db = getDb();
@@ -41,7 +39,6 @@ export const findUserPokemonById = async (userId, pokemonId) => {
   }
 };
 
-// Agregar un nuevo Pokémon al usuario
 export const addPokemonToUserData = async (pokemonData) => {
   try {
     const db = getDb();
@@ -59,7 +56,6 @@ export const addPokemonToUserData = async (pokemonData) => {
   }
 };
 
-// Actualizar datos de un Pokémon
 export const updatePokemonData = async (userId, pokemonId, updates) => {
   
   try {
@@ -89,7 +85,6 @@ export const updatePokemonData = async (userId, pokemonId, updates) => {
   }
 };
 
-// Eliminar un Pokémon del usuario
 export const removePokemonFromUser = async (userId, pokemonId) => {
   try {
     const db = getDb();

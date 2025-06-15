@@ -1,6 +1,5 @@
 import {trainPokemonService,getTrainingHistoryService,getTrainingStatsService,getTrainingTypesService} from "../services/trainingService.js";
 
-// Obtener tipos de entrenamiento disponibles
 export const getTrainingTypes = async (req, res) => {
   try {
     const trainingTypes = getTrainingTypesService();
@@ -16,7 +15,6 @@ export const getTrainingTypes = async (req, res) => {
   }
 };
 
-// Entrenar un Pokémon
 export const trainPokemon = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -62,7 +60,6 @@ export const trainPokemon = async (req, res) => {
   }
 };
 
-// Obtener historial de entrenamiento
 export const getTrainingHistory = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -90,7 +87,6 @@ export const getTrainingHistory = async (req, res) => {
   }
 };
 
-// Obtener estadísticas de entrenamiento
 export const getTrainingStats = async (req, res) => {
   try {
     const userId = req.user._id;

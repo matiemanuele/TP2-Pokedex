@@ -26,7 +26,7 @@ export const fetchPokemonFromAPI = async (identifier) => {
   }
 };
 
-// Obtener Pokémon aleatorio
+// pokemon aleatorio
 export const fetchRandomPokemon = async () => {
   try {
     console.log("🎲 Generando Pokémon aleatorio...");
@@ -39,7 +39,6 @@ export const fetchRandomPokemon = async () => {
   }
 };
 
-// Formatear datos del Pokemon 
 const formatPokemonData = (apiPokemon) => {
   try {
 
@@ -56,10 +55,6 @@ const formatPokemonData = (apiPokemon) => {
        attack: stats.attack,
         defense: stats.defense,
       types: apiPokemon.types.map(type => type.type.name),
-    //  sprites: {
-    //  front_default: apiPokemon.sprites.front_default,
-    //  official_artwork: apiPokemon.sprites.other?.["official-artwork"]?.front_default
-    //  }
     };  
     console.log(`✅ Datos formateados correctamente`);
     return formattedData;

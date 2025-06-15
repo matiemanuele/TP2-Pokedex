@@ -3,7 +3,6 @@ import { getDb } from "./connection.js";
 
 const COLLECTION_NAME = "training_sessions";
 
-// Crear una sesión de entrenamiento
 export const createTrainingSession = async (trainingData) => {
   try {
     const db = getDb();
@@ -23,7 +22,6 @@ export const createTrainingSession = async (trainingData) => {
   }
 };
 
-// Obtener historial de entrenamiento de un usuario
 export const findTrainingHistory = async (userId, limit = 20) => {
   try {
     const db = getDb();
@@ -41,7 +39,6 @@ export const findTrainingHistory = async (userId, limit = 20) => {
   }
 };
 
-// Obtener historial de entrenamiento de un Pokémon específico
 export const findPokemonTrainingHistory = async (userId, pokemonId, limit = 10) => {
   try {
     const db = getDb();
@@ -66,7 +63,6 @@ export const findPokemonTrainingHistory = async (userId, pokemonId, limit = 10) 
   }
 };
 
-// Obtener estadísticas de entrenamiento del usuario
 export const getUserTrainingStats = async (userId) => {
   try {
     const db = getDb();

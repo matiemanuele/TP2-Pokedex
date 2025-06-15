@@ -28,7 +28,6 @@ export const startBattle = async (req, res) => {
     
     let turn = 1;
 
-    // Batalla
     while (myPokemon.currentHp > 0 && enemyPokemon.currentHp > 0) {
 
       const myDamage = Math.max(myPokemon.attack - enemyPokemon.defense, 1);

@@ -1,7 +1,6 @@
 import {createTrainingSession,findTrainingHistory,findPokemonTrainingHistory,getUserTrainingStats } from "../data/trainingData.js";
 import { findUserPokemonById, updatePokemonData } from "../data/pokemonData.js";
 
-// Entrenar un Pokémon
 export const trainPokemonService = async (userId, pokemonId, trainingType) => {
   try {
     
@@ -14,7 +13,7 @@ export const trainPokemonService = async (userId, pokemonId, trainingType) => {
       throw new Error("Tipo de entrenamiento inválido. Usa 'attack' o 'defense'");
     }
     
-    // Calcular mejoras
+    // calcular mejoras
     let updates = {};
     let statsImproved = [];
     
@@ -36,7 +35,7 @@ export const trainPokemonService = async (userId, pokemonId, trainingType) => {
       });
     }
     
-    // Verificar si sube de nivel (cada 3 entrenamientos)
+    // verificar si sube de nivel (cada 3 entrenamientos)
     const trainingHistory = await findPokemonTrainingHistory(userId, pokemonId);
     const totalTrainings = trainingHistory.length + 1; 
     
@@ -61,10 +60,9 @@ export const trainPokemonService = async (userId, pokemonId, trainingType) => {
       });
     }
     
-    // Actualizar Pokémon en la base de datos
     await updatePokemonData(userId, pokemonId, updates);
     
-    // Crear registro de entrenamiento
+    //registro de entrenamiento
     const trainingSession = {
       userId: userId,
       pokemonId: pokemonId,
@@ -107,7 +105,6 @@ export const trainPokemonService = async (userId, pokemonId, trainingType) => {
   }
 };
 
-// Obtener historial de entrenamiento del usuario
 export const getTrainingHistoryService = async (userId, pokemonId = null, limit = 20) => {
   try {
     let history;
@@ -125,7 +122,6 @@ export const getTrainingHistoryService = async (userId, pokemonId = null, limit 
   }
 };
 
-// Obtener estadísticas de entrenamiento
 export const getTrainingStatsService = async (userId) => {
   try {
     const stats = await getUserTrainingStats(userId);
@@ -161,7 +157,6 @@ export const getTrainingStatsService = async (userId) => {
   }
 };
 
-// Obtener tipos de entrenamiento disponibles
 export const getTrainingTypesService = () => {
   return [
     {
