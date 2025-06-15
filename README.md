@@ -1,6 +1,6 @@
 Pokédex API - Proyecto Backend
 
-una Pokédex personalizada. Permite a los usuarios registrarse, iniciar sesión, capturar y entrenar Pokémon, gestionar sus favoritos, y participar en batallas.Este proyecto es una API RESTful desarrollada con Node.js, Express y MongoDB que simula 
+Este proyecto es una API RESTful desarrollada con Node.js, Express y MongoDB que simula una Pokédex personalizada. Permite a los usuarios registrarse, iniciar sesión, capturar y entrenar Pokémon, gestionar sus favoritos, y participar en batallas.
 
 ###Funcionalidad general###
 
@@ -12,14 +12,6 @@ una Pokédex personalizada. Permite a los usuarios registrarse, iniciar sesión,
 
 -Middleware de autenticación para proteger rutas privadas.
 
--Gestión de Pokémon favoritos
-
--Obtener la lista de favoritos del usuario autenticado.
-
--Agregar un Pokémon a favoritos.
-
--Eliminar un Pokémon de favoritos.
-
 -Captura de Pokémon
 
 -Permite capturar un Pokémon real desde la PokeAPI utilizando su ID.
@@ -28,21 +20,22 @@ una Pokédex personalizada. Permite a los usuarios registrarse, iniciar sesión,
 
 -Guarda la información en la colección del usuario.
 
--Entrenamiento de Pokémon
-
--Incrementa estadísticas de los Pokémon capturados (por ejemplo, nivel, experiencia, fuerza).
+-Entrenamiento de Pokémon  (Defensa-Fuerza, suben 5 hp por cada entrenamiento)
 
 -La mejora se guarda de forma persistente por usuario.
 
 -Batalla Pokémon
 
--Simula una batalla entre un Pokémon del usuario y otro oponente.
+-Simula una batalla entre un Pokémon de dos usuarios random 
 
--Utiliza lógica basada en estadísticas (ataque, defensa, velocidad).
+-Utiliza lógica basada en estadísticas (puntos de hp de ataque, defensa basada en el entrenamiento previo).
+
+
+-Hacerlo luchar hasta que uno de los pokemones quede en 0 hp (depende del atque , defensa ganan o pierden)
 
 -El Pokémon perdedor es eliminado de la colección del usuario.
 
-(Opcional) Puede guardarse un historial de batallas.
+-Historial de batallas.
 
 Endpoints principales
 
@@ -85,7 +78,3 @@ Bcrypt
 dotenv
 
 PokeAPI (para obtener datos reales de Pokémon)
-
-
-
-FEHCAS :  26/6  presentacion , 16/7 Defensa 
