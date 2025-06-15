@@ -1,25 +1,17 @@
-import { getDb } from "../data/connection.js";
-import { ObjectId } from "mongodb";
+import {
+  getRandomUserWithPokemon,
+  removePokemonFromUser,
+  saveBattleHistory,
+} from "../data/battleData.js";
 
-export const getRandomUserWithPokemon = async () => {
-  const db = getDb();
-  const users = await db.collection("users").aggregate([
-    { $match: { pokemons: { $exists: true, $not: { $size: 0 } } } },
-    { $sample: { size: 2 } }
-  ]).toArray();
-
-  return users.length === 2 ? users : [null, null];
+export const getRandomUserWithPokemonService = async () => {
+  return await getRandomUserWithPokemon();
 };
 
-export const removePokemonFromUser = async (userId, pokemonId) => {
-  const db = getDb();
-  await db.collection("users").updateOne(
-    { _id: new ObjectId(userId) },
-    { $pull: { pokemons: { _id: new ObjectId(pokemonId) } } }
-  );
+export const removePokemonFromUserService = async (userId, pokemonId) => {
+  return await removePokemonFromUser(userId, pokemonId);
 };
 
-export const saveBattleHistory = async (battle) => {
-  const db = getDb();
-  await db.collection("battle_history").insertOne(battle);
+export const saveBattleHistoryService = async (battle) => {
+  return await saveBattleHistory(battle);
 };

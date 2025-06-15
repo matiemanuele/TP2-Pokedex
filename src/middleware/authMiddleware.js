@@ -18,9 +18,12 @@ export function authMiddleware(req, res, next) {
 }
 
 export function isAdmin(req, res, next) {
+  // password: 1234
   if (req.user && req.user.role === "admin") {
     next();
   } else {
-    return res.status(403).json({ message: "Acceso denegado: se requiere rol de administrador" });
+    return res
+      .status(403)
+      .json({ message: "Acceso denegado: se requiere rol de administrador" });
   }
 }

@@ -1,5 +1,11 @@
-import {getUsers,getUserById,registerUserService,loginUserService,updateUserByAdmin, deleteUserByIdService} from "../services/userService.js";
-import { removePokemonFromUser, updatePokemonForUser } from "../services/pokemonService.js";
+import {
+  getUsers,
+  getUserById,
+  registerUserService,
+  loginUserService,
+  updateUserByAdminService,
+  deleteUserByIdService,
+} from "../services/userService.js";
 import jwt from "jsonwebtoken";
 
 export const getAllUsers = async (req, res) => {
@@ -40,20 +46,16 @@ export const loginUserController = async (req, res) => {
 export const registerUserController = async (req, res) => {
   const { username, email, password } = req.body;
   if (!username || !email || !password) {
-    return res
-      .status(400)
-      .json({
-        message: "Faltan campos obligatorios (username, email, password)",
-      });
+    return res.status(400).json({
+      message: "Faltan campos obligatorios (username, email, password)",
+    });
   }
   try {
     const result = await registerUserService({ username, email, password });
-    res
-      .status(201)
-      .json({
-        message: "Usuario registrado exitosamente",
-        userId: result.insertedId,
-      });
+    res.status(201).json({
+      message: "Usuario registrado exitosamente",
+      userId: result.insertedId,
+    });
   } catch (error) {
     if (error.message === "El email ya está registrado") {
       return res.status(409).json({ message: error.message });
@@ -81,11 +83,13 @@ export const updateUserAdmin = async (req, res) => {
   const { id } = req.params;
 
   if (!email && !password) {
-    return res.status(400).json({ message: "Debe enviar email o password a modificar" });
+    return res
+      .status(400)
+      .json({ message: "Debe enviar email o password a modificar" });
   }
 
   try {
-    const result = await updateUserByAdmin(id, { email, password });
+    const result = await updateUserByAdminService(id, { email, password });
     res.json({ message: "Usuario actualizado correctamente", result });
   } catch (error) {
     res.status(500).json({ message: "Error actualizando usuario" });
@@ -100,4 +104,3 @@ export const deleteUserAdmin = async (req, res) => {
     res.status(500).json({ message: "Error eliminando usuario" });
   }
 };
-
