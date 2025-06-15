@@ -13,8 +13,8 @@ const router = express.Router();
 
 router.post("/register", registerUserController);
 router.post("/login", loginUserController);
-router.put("/users/:id", authMiddleware, isAdmin, updateUserAdmin);
-router.delete("/users/:id", authMiddleware, isAdmin, deleteUserAdmin);
+router.put("/:id", authMiddleware, isAdmin, updateUserAdmin);
+router.delete("/:id", authMiddleware, isAdmin, deleteUserAdmin);
 router.get("/", authMiddleware, getAllUsers);
 router.get("/:id", authMiddleware, getUser);
 

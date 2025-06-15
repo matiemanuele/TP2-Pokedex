@@ -85,9 +85,13 @@ export const removePokemonFromUserService = async (userId, pokemonId) => {
   }
 };
 
-export const updatePokemonForUserService = async (userId, pokemonId) => {
+export const updatePokemonForUserService = async (
+  userId,
+  pokemonId,
+  updateData
+) => {
   try {
-    return await updatePokemonData(userId, pokemonId);
+    return await updatePokemonData(userId, pokemonId, updateData);
   } catch {
     console.error("Error en actualizar Pokemon del usuario", error);
     throw new Error("Error en actualizar Pokemon del usuario");
