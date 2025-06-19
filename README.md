@@ -1,80 +1,66 @@
-Pokédex API - Proyecto Backend
+# PokéAPI 
 
-Este proyecto es una API RESTful desarrollada con Node.js, Express y MongoDB que simula una Pokédex personalizada. Permite a los usuarios registrarse, iniciar sesión, capturar y entrenar Pokémon, gestionar sus favoritos, y participar en batallas.
+Este proyecto es una API RESTful construida con Node.js, Express y MongoDB que permite a los usuarios registrarse, capturar Pokémon desde la PokéAPI, entrenarlos y participar en batallas contra otros jugadores.
 
-###Funcionalidad general###
+---
 
--Autenticación y gestión de usuarios
+##  Características
 
--Registro con email y contraseña encriptada.
+- Registro y login de usuarios con JWT
+- Captura de Pokémon desde PokéAPI
+- Entrenamiento de atributos (ataque y defensa)
+- Simulación de batallas entre usuarios
+- Historial de batallas y entrenamientos
+- Gestión de usuarios y Pokémon (admin)
+- Modularidad con controladores, servicios y middlewares
 
--Inicio de sesión con generación de token JWT.
+---
 
--Middleware de autenticación para proteger rutas privadas.
+## Usuarios ## 
 
--Captura de Pokémon
-
--Permite capturar un Pokémon real desde la PokeAPI utilizando su ID.
-
--Verifica si el Pokémon ya está capturado.
-
--Guarda la información en la colección del usuario.
-
--Entrenamiento de Pokémon  (Defensa-Fuerza, suben 5 hp por cada entrenamiento)
-
--La mejora se guarda de forma persistente por usuario.
-
--Batalla Pokémon
-
--Simula una batalla entre un Pokémon de dos usuarios random 
-
--Utiliza lógica basada en estadísticas (puntos de hp de ataque, defensa basada en el entrenamiento previo).
+POST /users/register = Registro de usuario
+POST	/users/login = Login y generación de token
+GET	/users/	= Obtener todos los usuarios (auth)
+GET	/users/:id = Obtener usuario por ID (auth)
 
 
--Hacerlo luchar hasta que uno de los pokemones quede en 0 hp (depende del atque , defensa ganan o pierden)
+## Admin ## 
 
--El Pokémon perdedor es eliminado de la colección del usuario.
+PUT	/users/:id = Actualizar email/pass
+DELETE	/users/:id = Eliminar usuario
+DELETE	/pokemon/users/:userId/pokemon/:pokeId = Eliminar Pokémon de otro usuario 
+PUT	/pokemon/users/:userId/pokemon/:pokeId	= Actualizar Pokémon de otro usuario
 
--Historial de batallas.
+ ## Pokémon ## 
 
-Endpoints principales
+GET	/pokemon/random	= Obtener Pokémon aleatorio desde PokéAPI
+GET	/pokemon/api/:id = Obtener Pokémon específico desde PokéAPI
+GET	/pokemon/my = Obtener Pokémon del usuario actual (auth)
+POST	/pokemon/catch = Capturar Pokémon (auth)
+DELETE	/pokemon/my/:id	= Liberar un Pokémon del usuario actual (auth)
 
-###Usuarios###
 
-POST /api/users/register - Registrar un nuevo usuario.
+ ## Entrenamiento ## 
 
-POST /api/users/login: Iniciar sesión.
+GET	/training/types	= Tipos de entrenamiento disponibles (attack, defense)
+POST	/training/train	= Entrenar Pokémon (auth)
+GET	/training/history = Historial de entrenamiento (auth)
+GET	/training/stats	= Estadísticas por tipo de entrenamiento (auth)
 
-###Pokémon###
+## Batalla ## 
+POST /battle = Iniciar una batalla entre tu Pokémon y otro (auth)
 
-GET /api/pokemon/getfavorites  - Obtener Pokémon favoritos del usuario autenticado.
+## Tecnologías Usadas ## 
 
-POST /api/pokemon/addfavorites - Agregar un Pokémon a favoritos.
+Node.js + Express
 
-DELETE /api/pokemon/favorites/:id - Eliminar un Pokémon de favoritos.
+MongoDB + MongoDB Atlas
 
-POST /api/pokemon/catch - Capturar un Pokémon desde la PokeAPI.
+PokéAPI REST (https://pokeapi.co)
 
-POST /api/pokemon/train/:id - Entrenar un Pokémon capturado.
+JWT para autenticación
 
-POST /api/pokemon/battle - Iniciar una batalla Pokémon.
+Bcrypt para hashing de contraseñas
 
-GET /api/pokemon/random - Obtener un Pokémon aleatorio.
+Morgan + CORS
 
-GET /api/pokemon/my - Obtener todos los Pokémon capturados por el usuario.
-
-###Tecnologías utilizadas
-
-Node.js
-
-Express.js
-
-MongoDB + Mongoose
-
-JWT (jsonwebtoken)
-
-Bcrypt
-
-dotenv
-
-PokeAPI (para obtener datos reales de Pokémon)

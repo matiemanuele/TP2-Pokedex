@@ -9,8 +9,8 @@ import battleRoutes from "./routes/battleRoutes.js";
 const app = express();
 
 app.use(express.json());
-app.use(morgan("dev"));
-app.use(cors());
+app.use(morgan("dev")); //run dev
+app.use(cors()); //llama a la API desde el frontend
 app.use("/api/users", userRoutes);
 app.use("/api/pokemon", pokemonRoutes);
 app.use("/api/training", trainingRoutes);
