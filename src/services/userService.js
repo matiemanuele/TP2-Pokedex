@@ -23,9 +23,14 @@ export const updateUserByAdminService = async (id, { email, password }) => {
   return await updateUserByAdmin(id, { email, password });
 };
 
-export const registerUserService = async ({ username, email, password }) => {
+export const registerUserService = async ({
+  username,
+  email,
+  password,
+  role,
+}) => {
   try {
-    return await registerUser({ username, email, password });
+    return await registerUser({ username, email, password, role });
   } catch (error) {
     if (error.message === "El email ya está registrado") {
       throw error;

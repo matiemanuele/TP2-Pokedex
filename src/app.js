@@ -19,7 +19,7 @@ app.use("/api/battle", battleRoutes);
 app.get("/", (req, res) => {
   res.json({
     message: "🚀 Test - Solo usuarios",
-    status: "OK"
+    status: "OK",
   });
 });
 

@@ -22,7 +22,6 @@ export async function findUserByUsername(username) {
   return user;
 }
 
-
 export async function findByCredentials(email, password) {
   const db = getDb();
   const user = await db.collection("users").findOne({ email });
@@ -37,9 +36,9 @@ export async function findByCredentials(email, password) {
 }
 
 // hashea el password y lo guarda en la base de datos
-export async function registerUser({ username, email, password }) {
+export async function registerUser({ username, email, password, role }) {
   const db = getDb();
-// el usuario ya existe?
+  // el usuario ya existe?
   const existingUser = await db.collection("users").findOne({ email });
   if (existingUser) {
     throw new Error("El email ya está registrado");
@@ -51,6 +50,7 @@ export async function registerUser({ username, email, password }) {
     username,
     email,
     password: hashedPassword,
+    role,
   };
   const result = await db.collection("users").insertOne(newUser);
   return result;

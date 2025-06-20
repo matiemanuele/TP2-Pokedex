@@ -8,7 +8,7 @@ import {
 export const getBattleOpponentService = async (currentUserId) => {
   const currentUser = await getCurrentUserWithPokemon(currentUserId);
   const opponent = await getRandomOpponent(currentUserId);
-  
+
   return { currentUser, opponent };
 };
 

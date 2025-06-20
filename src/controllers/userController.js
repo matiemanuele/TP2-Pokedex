@@ -29,7 +29,12 @@ export const loginUserController = async (req, res) => {
     const user = await loginUserService({ email, password });
     // Generar JWT
     const token = jwt.sign(
-      { _id: user._id, username: user.username, email: user.email },
+      {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+      },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
@@ -44,17 +49,24 @@ export const loginUserController = async (req, res) => {
 };
 
 export const registerUserController = async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, role } = req.body;
+
   if (!username || !email || !password) {
     return res.status(400).json({
-      message: "Faltan campos obligatorios (username, email, password)",
+      message: "Faltan campos obligatorios (username, email, password, role)",
     });
   }
   try {
-    const result = await registerUserService({ username, email, password });
+    const result = await registerUserService({
+      username,
+      email,
+      password,
+      role: role?.trim() || "user",
+    });
+
     res.status(201).json({
       message: "Usuario registrado exitosamente",
-      userId: result.insertedId,
+      userId: result.insertedId, // Esto devuelve el ID del nuevo usuario insertado (por ejemplo, en MongoDB)
     });
   } catch (error) {
     if (error.message === "El email ya está registrado") {
